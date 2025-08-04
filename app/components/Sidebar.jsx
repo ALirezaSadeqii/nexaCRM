@@ -1,5 +1,5 @@
 'use client'
-
+import supabase from '../config/supabaseClient'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { 
@@ -11,6 +11,7 @@ import {
   Cog6ToothIcon 
 } from '@heroicons/react/24/outline'
 
+console.log(supabase)
 const navigation = [
   { name: 'Dashboard', href: '/', icon: HomeIcon },
   { name: 'Contacts', href: '/contacts', icon: UserGroupIcon },

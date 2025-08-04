@@ -1,5 +1,5 @@
 import Image from 'next/image'
-
+import supabase from './config/supabaseClient'
 export default function Dashboard() {
   return (
     <div className="p-6">

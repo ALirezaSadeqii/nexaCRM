@@ -1,19 +1,19 @@
 'use client'
 import supabase from '../config/supabaseClient'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { 
   HomeIcon, 
   UserGroupIcon, 
   CurrencyDollarIcon, 
   BuildingOfficeIcon, 
   CalendarIcon, 
-  Cog6ToothIcon 
+  Cog6ToothIcon,
+  ArrowRightOnRectangleIcon
 } from '@heroicons/react/24/outline'
 
-console.log(supabase)
 const navigation = [
-  { name: 'Dashboard', href: '/', icon: HomeIcon },
+  { name: 'Dashboard', href: '/dashboard', icon: HomeIcon },
   { name: 'Contacts', href: '/contacts', icon: UserGroupIcon },
   { name: 'Deals', href: '/deals', icon: CurrencyDollarIcon },
   { name: 'Companies', href: '/companies', icon: BuildingOfficeIcon },
@@ -21,8 +21,29 @@ const navigation = [
   { name: 'Settings', href: '/settings', icon: Cog6ToothIcon },
 ]
 
-export default function Sidebar() {
+export default function Sidebar({ session }) {
   const pathname = usePathname()
+  const router = useRouter()
+
+  const handleLogout = async () => {
+    try {
+      const { error } = await supabase.auth.signOut()
+      if (error) {
+        console.error('Error signing out:', error)
+      } else {
+        router.push('/')
+      }
+    } catch (error) {
+      console.error('Error in logout:', error)
+    }
+  }
+
+  // Get user info from session
+  const userEmail = session?.user?.email || 'user@example.com'
+  const userName = session?.user?.user_metadata?.full_name || 
+                  session?.user?.user_metadata?.name || 
+                  userEmail.split('@')[0] || 
+                  'User'
 
   return (
     <div className="flex h-full w-64 flex-col bg-gray-900">
@@ -59,14 +80,25 @@ export default function Sidebar() {
       
       {/* User section */}
       <div className="border-t border-gray-800 p-4">
-        <div className="flex items-center">
-          <div className="h-8 w-8 rounded-full bg-gray-700 flex items-center justify-center">
-            <span className="text-sm font-medium text-white">U</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center">
+            <div className="h-8 w-8 rounded-full bg-gray-700 flex items-center justify-center">
+              <span className="text-sm font-medium text-white">
+                {userName.charAt(0).toUpperCase()}
+              </span>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm font-medium text-white">{userName}</p>
+              <p className="text-xs text-gray-400">{userEmail}</p>
+            </div>
           </div>
-          <div className="ml-3">
-            <p className="text-sm font-medium text-white">User</p>
-            <p className="text-xs text-gray-400">user@example.com</p>
-          </div>
+          <button
+            onClick={handleLogout}
+            className="text-gray-400 hover:text-white transition-colors"
+            title="Logout"
+          >
+            <ArrowRightOnRectangleIcon className="h-5 w-5" />
+          </button>
         </div>
       </div>
     </div>

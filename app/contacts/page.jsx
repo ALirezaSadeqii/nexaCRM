@@ -482,7 +482,7 @@ export default function Contacts() {
                 value={quickAdd.company}
                 onChange={handleQuickAddChange}
                 placeholder="Company"
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500"
               />
               <input
                 type="text"
@@ -691,13 +691,13 @@ export default function Contacts() {
                       setPageSize(Number(e.target.value))
                       setPage(1)
                     }}
-                    className="border border-gray-300 rounded-lg px-2 py-1 text-sm"
+                    className="border border-gray-300 text-black rounded-lg px-2 py-1 text-sm"
                   >
                     {[10, 20, 50].map((n) => (
                       <option key={n} value={n}>{n} / page</option>
                     ))}
                   </select>
-                  <div className="flex items-center gap-1">
+                  <div className="flex text-black items-center gap-1">
                     <button
                       onClick={() => setPage((p) => Math.max(1, p - 1))}
                       disabled={currentPage === 1}

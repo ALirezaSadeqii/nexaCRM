@@ -537,8 +537,8 @@ export default function Deals() {
                 className="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium"
               >
                 <PlusIcon className="h-4 w-4" />
-                Add Deal
-              </button>
+              Add Deal
+            </button>
             </div>
           </div>
         </div>

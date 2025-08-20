@@ -628,7 +628,7 @@ export default function Deals() {
                         <button
                           type="button"
                           onClick={() => toggleSort(col.key)}
-                          className="inline-flex items-center gap-1 hover:text-gray-700"
+                          className="inline-flex items-center gap-1 text-black hover:text-gray-700"
                         >
                           {col.label}
                           {sort.key === col.key ? (
@@ -796,7 +796,7 @@ export default function Deals() {
                       <option key={n} value={n}>{n} / page</option>
                     ))}
                   </select>
-                  <div className="flex text-black items-center gap-1">
+                  <div className="flex items-center gap-1 text-black">
                     <button
                       onClick={() => setPage((p) => Math.max(1, p - 1))}
                       disabled={currentPage === 1}

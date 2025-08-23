@@ -18,6 +18,7 @@ import supabase from "../config/supabaseClient"
 
 export default function Contacts() {
   const [contacts, setContacts] = useState([])
+  const [companies, setCompanies] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [editingContact, setEditingContact] = useState(null)
@@ -25,8 +26,16 @@ export default function Contacts() {
   const [formValues, setFormValues] = useState({
     name: "",
     email: "",
-    company: "",
+    company_id: "",
     phone: "",
+  })
+  const [showNewCompanyForm, setShowNewCompanyForm] = useState(false)
+  const [newCompanyForm, setNewCompanyForm] = useState({
+    name: "",
+    industry: "",
+    website: "",
+    phone: "",
+    address: "",
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [message, setMessage] = useState({ type: "", text: "" })
@@ -35,15 +44,15 @@ export default function Contacts() {
   const [pageSize, setPageSize] = useState(10)
   const [selectedIds, setSelectedIds] = useState(new Set())
   const [inlineEditId, setInlineEditId] = useState(null)
-  const [inlineValues, setInlineValues] = useState({ name: "", email: "", company: "", phone: "" })
-  const [quickAdd, setQuickAdd] = useState({ name: "", email: "", company: "", phone: "" })
+  const [inlineValues, setInlineValues] = useState({ name: "", email: "", company_id: "", phone: "" })
+  const [quickAdd, setQuickAdd] = useState({ name: "", email: "", company_id: "", phone: "" })
 
   const filteredContacts = useMemo(() => {
     if (!searchTerm) return contacts
     return contacts.filter(contact => 
       contact.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       contact.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      contact.company?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      contact.company_name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
       contact.phone?.toLowerCase().includes(searchTerm.toLowerCase())
     )
   }, [contacts, searchTerm])
@@ -72,7 +81,7 @@ export default function Contacts() {
 
   useEffect(() => {
     let isActive = true
-    const loadContacts = async () => {
+    const loadData = async () => {
       setIsLoading(true)
       try {
         const { data: userData, error: userError } = await supabase.auth.getUser()
@@ -80,34 +89,65 @@ export default function Contacts() {
         const userId = userData?.user?.id
         if (!userId) {
           setContacts([])
+          setCompanies([])
           setMessage({ type: "error", text: "You must be signed in to view contacts." })
           return
         }
 
-        const { data, error } = await supabase
+        // Load contacts with company information
+        const { data: contactsData, error: contactsError } = await supabase
           .from("contacts")
-          .select("id, name, email, company, phone, created_at")
+          .select(`
+            id, 
+            name, 
+            email, 
+            company_id, 
+            phone, 
+            created_at,
+            companies(name)
+          `)
           .eq("user_id", userId)
           .order("created_at", { ascending: false })
 
-        if (error) throw error
-        if (isActive) setContacts(data || [])
+        if (contactsError) throw contactsError
+
+        // Transform the data to flatten the company name
+        const transformedContacts = contactsData?.map(contact => ({
+          ...contact,
+          company_name: contact.companies?.name || null
+        })) || []
+
+        // Load companies for dropdown
+        const { data: companiesData, error: companiesError } = await supabase
+          .from("companies")
+          .select("id, name")
+          .eq("user_id", userId)
+          .order("name", { ascending: true })
+
+        if (companiesError) throw companiesError
+
+        if (isActive) {
+          setContacts(transformedContacts)
+          setCompanies(companiesData || [])
+        }
       } catch (err) {
-        console.error("Error loading contacts:", err)
+        console.error("Error loading data:", err)
         if (isActive) setMessage({ type: "error", text: "Failed to load contacts." })
       } finally {
         if (isActive) setIsLoading(false)
       }
     }
 
-    loadContacts()
+    loadData()
     return () => {
       isActive = false
     }
   }, [])
 
   const openModal = () => {
-    setFormValues({ name: "", email: "", company: "", phone: "" })
+    setFormValues({ name: "", email: "", company_id: "", phone: "" })
+    setShowNewCompanyForm(false)
+    setNewCompanyForm({ name: "", industry: "", website: "", phone: "", address: "" })
     setMessage({ type: "", text: "" })
     setIsModalOpen(true)
   }
@@ -115,6 +155,8 @@ export default function Contacts() {
   const closeModal = () => {
     setIsModalOpen(false)
     setEditingContact(null)
+    setShowNewCompanyForm(false)
+    setNewCompanyForm({ name: "", industry: "", website: "", phone: "", address: "" })
   }
 
   const handleInputChange = (e) => {
@@ -122,18 +164,41 @@ export default function Contacts() {
     setFormValues((prev) => ({ ...prev, [name]: value }))
   }
 
+  const handleNewCompanyInputChange = (e) => {
+    const { name, value } = e.target
+    setNewCompanyForm((prev) => ({ ...prev, [name]: value }))
+  }
+
   const refreshContacts = async () => {
     try {
       const { data: userData } = await supabase.auth.getUser()
       const userId = userData?.user?.id
       if (!userId) return
-      const { data, error } = await supabase
+      
+      // Load contacts with company information
+      const { data: contactsData, error: contactsError } = await supabase
         .from("contacts")
-        .select("id, name, email, company, phone, created_at")
+        .select(`
+          id, 
+          name, 
+          email, 
+          company_id, 
+          phone, 
+          created_at,
+          companies(name)
+        `)
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
-      if (error) throw error
-      setContacts(data || [])
+
+      if (contactsError) throw contactsError
+
+      // Transform the data to flatten the company name
+      const transformedContacts = contactsData?.map(contact => ({
+        ...contact,
+        company_name: contact.companies?.name || null
+      })) || []
+
+      setContacts(transformedContacts)
       setSelectedIds(new Set())
     } catch (err) {
       console.error("Error refreshing contacts:", err)
@@ -145,7 +210,7 @@ export default function Contacts() {
     setIsSubmitting(true)
     setMessage({ type: "", text: "" })
     try {
-      const { name, email, company, phone } = formValues
+      const { name, email, company_id, phone } = formValues
 
       if (!name && !email) {
         setMessage({ type: "error", text: "Please provide at least a name or an email." })
@@ -160,6 +225,37 @@ export default function Contacts() {
         return
       }
 
+      let finalCompanyId = company_id
+
+      // If creating a new company, create it first
+      if (showNewCompanyForm && newCompanyForm.name) {
+        const { data: newCompany, error: companyError } = await supabase
+          .from("companies")
+          .insert([
+            {
+              name: newCompanyForm.name,
+              industry: newCompanyForm.industry || null,
+              website: newCompanyForm.website || null,
+              phone: newCompanyForm.phone || null,
+              address: newCompanyForm.address || null,
+              user_id: userId,
+            },
+          ])
+          .select()
+          .single()
+
+        if (companyError) throw companyError
+        finalCompanyId = newCompany.id
+        
+        // Refresh companies list
+        const { data: companiesData } = await supabase
+          .from("companies")
+          .select("id, name")
+          .eq("user_id", userId)
+          .order("name", { ascending: true })
+        setCompanies(companiesData || [])
+      }
+
       if (editingContact) {
         // Update existing contact
         const { error } = await supabase
@@ -167,7 +263,7 @@ export default function Contacts() {
           .update({
             name: name || null,
             email: email || null,
-            company: company || null,
+            company_id: finalCompanyId || null,
             phone: phone || null,
           })
           .eq("id", editingContact.id)
@@ -181,7 +277,7 @@ export default function Contacts() {
           {
             name: name || null,
             email: email || null,
-            company: company || null,
+            company_id: finalCompanyId || null,
             phone: phone || null,
             user_id: userId,
           },
@@ -207,7 +303,7 @@ export default function Contacts() {
     setInlineValues({
       name: contact.name || "",
       email: contact.email || "",
-      company: contact.company || "",
+      company_id: contact.company_id || "",
       phone: contact.phone || "",
     })
   }
@@ -302,7 +398,7 @@ export default function Contacts() {
         .update({
           name: inlineValues.name || null,
           email: inlineValues.email || null,
-          company: inlineValues.company || null,
+          company_id: inlineValues.company_id || null,
           phone: inlineValues.phone || null,
         })
         .eq("id", id)
@@ -342,14 +438,14 @@ export default function Contacts() {
         {
           name: quickAdd.name || null,
           email: quickAdd.email || null,
-          company: quickAdd.company || null,
+          company_id: quickAdd.company_id || null,
           phone: quickAdd.phone || null,
           user_id: userId,
         },
       ])
       if (error) throw error
       setMessage({ type: "success", text: "Contact added." })
-      setQuickAdd({ name: "", email: "", company: "", phone: "" })
+      setQuickAdd({ name: "", email: "", company_id: "", phone: "" })
       setPage(1)
       await refreshContacts()
     } catch (err) {
@@ -364,7 +460,7 @@ export default function Contacts() {
       ...sortedContacts.map((c) => [
         c.name || "",
         c.email || "",
-        c.company || "",
+        c.company_name || "",
         c.phone || "",
         c.created_at ? new Date(c.created_at).toISOString() : "",
       ]),
@@ -476,14 +572,28 @@ export default function Contacts() {
                 placeholder="Email"
                 className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
               />
-              <input
-                type="text"
-                name="company"
-                value={quickAdd.company}
-                onChange={handleQuickAddChange}
-                placeholder="Company"
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500"
-              />
+              <select
+                name="company_id"
+                value={quickAdd.company_id}
+                onChange={(e) => {
+                  if (e.target.value === "new") {
+                    // For quick add, we'll just show a message to use the full form for new companies
+                    setMessage({ type: "info", text: "Please use the 'Add Contact' button to create a new company." })
+                    setQuickAdd(prev => ({ ...prev, company_id: "" }))
+                  } else {
+                    setQuickAdd(prev => ({ ...prev, company_id: e.target.value }))
+                  }
+                }}
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">Select Company</option>
+                <option value="new">+ Create New Company (use Add Contact)</option>
+                {companies.map((company) => (
+                  <option key={company.id} value={company.id}>
+                    {company.name}
+                  </option>
+                ))}
+              </select>
               <input
                 type="text"
                 name="phone"
@@ -524,7 +634,7 @@ export default function Contacts() {
                     {[
                       { key: "name", label: "Name" },
                       { key: "email", label: "Email" },
-                      { key: "company", label: "Company" },
+                      { key: "company_name", label: "Company" },
                       { key: "phone", label: "Phone" },
                       { key: "created_at", label: "Created" },
                     ].map((col) => (
@@ -580,13 +690,19 @@ export default function Contacts() {
                             />
                           </td>
                           <td className="px-6 py-3 whitespace-nowrap">
-                            <input
-                              type="text"
-                              name="company"
-                              value={inlineValues.company}
+                            <select
+                              name="company_id"
+                              value={inlineValues.company_id}
                               onChange={handleInlineChange}
                               className="w-full px-2 py-1 border border-gray-300 rounded"
-                            />
+                            >
+                              <option value="">Select Company</option>
+                              {companies.map((company) => (
+                                <option key={company.id} value={company.id}>
+                                  {company.name}
+                                </option>
+                              ))}
+                            </select>
                           </td>
                           <td className="px-6 py-3 whitespace-nowrap">
                             <input
@@ -636,7 +752,7 @@ export default function Contacts() {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-700">{contact.company || "—"}</div>
+                            <div className="text-sm text-gray-700">{contact.company_name || "—"}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
                             <div className="text-sm text-gray-700">
@@ -805,14 +921,28 @@ export default function Contacts() {
                       <label className="block text-sm font-medium text-gray-700 mb-2">
                         Company
                       </label>
-                      <input
-                        type="text"
-                        name="company"
-                        value={formValues.company}
-                        onChange={handleInputChange}
+                      <select
+                        name="company_id"
+                        value={formValues.company_id}
+                        onChange={(e) => {
+                          if (e.target.value === "new") {
+                            setShowNewCompanyForm(true)
+                            setFormValues(prev => ({ ...prev, company_id: "" }))
+                          } else {
+                            setShowNewCompanyForm(false)
+                            setFormValues(prev => ({ ...prev, company_id: e.target.value }))
+                          }
+                        }}
                         className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                        placeholder="Enter company name"
-                      />
+                      >
+                        <option value="">Select Company</option>
+                        <option value="new">+ Create New Company</option>
+                        {companies.map((company) => (
+                          <option key={company.id} value={company.id}>
+                            {company.name}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -828,6 +958,83 @@ export default function Contacts() {
                       />
                     </div>
                   </div>
+
+                  {/* New Company Form */}
+                  {showNewCompanyForm && (
+                    <div className="border-t border-gray-200 pt-6 mt-6">
+                      <h4 className="text-lg font-medium text-gray-900 mb-4">Create New Company</h4>
+                      <div className="space-y-4">
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Company Name <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            name="name"
+                            value={newCompanyForm.name}
+                            onChange={handleNewCompanyInputChange}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            placeholder="Enter company name"
+                            required
+                          />
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Industry
+                          </label>
+                          <input
+                            type="text"
+                            name="industry"
+                            value={newCompanyForm.industry}
+                            onChange={handleNewCompanyInputChange}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            placeholder="Enter industry"
+                          />
+                        </div>
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Website
+                            </label>
+                            <input
+                              type="url"
+                              name="website"
+                              value={newCompanyForm.website}
+                              onChange={handleNewCompanyInputChange}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                              placeholder="https://example.com"
+                            />
+                          </div>
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-2">
+                              Company Phone
+                            </label>
+                            <input
+                              type="tel"
+                              name="phone"
+                              value={newCompanyForm.phone}
+                              onChange={handleNewCompanyInputChange}
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                              placeholder="Enter company phone"
+                            />
+                          </div>
+                        </div>
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Address
+                          </label>
+                          <input
+                            type="text"
+                            name="address"
+                            value={newCompanyForm.address}
+                            onChange={handleNewCompanyInputChange}
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            placeholder="Enter company address"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
                 </div>
 
                 <div className="flex items-center justify-end gap-3 mt-8 pt-4 border-t border-gray-200">

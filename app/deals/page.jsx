@@ -95,7 +95,7 @@ export default function Deals() {
           return
         }
 
-        // Load deals with contact information
+        // Load deals with contact and company information
         const { data: dealsData, error: dealsError } = await supabase
           .from("deals")
           .select(`
@@ -105,7 +105,7 @@ export default function Deals() {
             status, 
             contact_id, 
             created_at,
-            contacts!inner(name, email, company)
+            contacts(name, email, company_id, companies(name))
           `)
           .eq("user_id", userId)
           .order("created_at", { ascending: false })
@@ -117,13 +117,19 @@ export default function Deals() {
           ...deal,
           contact_name: deal.contacts?.name || "Unknown Contact",
           contact_email: deal.contacts?.email,
-          contact_company: deal.contacts?.company
+          contact_company: deal.contacts?.companies?.name || null
         }))
 
         // Load contacts for dropdown
         const { data: contactsData, error: contactsError } = await supabase
           .from("contacts")
-          .select("id, name, email, company")
+          .select(`
+            id, 
+            name, 
+            email, 
+            company_id,
+            companies(name)
+          `)
           .eq("user_id", userId)
           .order("name", { ascending: true })
 
@@ -178,7 +184,7 @@ export default function Deals() {
           status, 
           contact_id, 
           created_at,
-          contacts!inner(name, email, company)
+          contacts(name, email, company_id, companies(name))
         `)
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
@@ -189,7 +195,7 @@ export default function Deals() {
         ...deal,
         contact_name: deal.contacts?.name || "Unknown Contact",
         contact_email: deal.contacts?.email,
-        contact_company: deal.contacts?.company
+        contact_company: deal.contacts?.companies?.name || null
       }))
 
       setDeals(transformedDeals || [])
@@ -584,7 +590,7 @@ export default function Deals() {
                 <option value="">Select Contact</option>
                 {contacts.map(contact => (
                   <option key={contact.id} value={contact.id}>
-                    {contact.name} {contact.company ? `(${contact.company})` : ''}
+                    {contact.name} {contact.companies?.name ? `(${contact.companies.name})` : ''}
                   </option>
                 ))}
               </select>
@@ -698,7 +704,7 @@ export default function Deals() {
                               <option value="">Select Contact</option>
                               {contacts.map(contact => (
                                 <option key={contact.id} value={contact.id}>
-                                  {contact.name} {contact.company ? `(${contact.company})` : ''}
+                                  {contact.name} {contact.companies?.name ? `(${contact.companies.name})` : ''}
                                 </option>
                               ))}
                             </select>
@@ -931,7 +937,7 @@ export default function Deals() {
                       <option value="">Select Contact</option>
                       {contacts.map(contact => (
                         <option key={contact.id} value={contact.id}>
-                          {contact.name} {contact.company ? `(${contact.company})` : ''}
+                          {contact.name} {contact.companies?.name ? `(${contact.companies.name})` : ''}
                         </option>
                       ))}
                     </select>

@@ -97,7 +97,7 @@ export default function Activities() {
           return
         }
 
-        // Load activities with contact information
+        // Load activities with contact and company information
         const { data: activitiesData, error: activitiesError } = await supabase
           .from("activities")
           .select(`
@@ -106,7 +106,7 @@ export default function Activities() {
             notes, 
             contact_id, 
             created_at,
-            contacts!inner(name, email, company)
+            contacts(name, email, company_id, companies(name))
           `)
           .eq("user_id", userId)
           .order("created_at", { ascending: false })
@@ -118,13 +118,19 @@ export default function Activities() {
           ...activity,
           contact_name: activity.contacts?.name || "Unknown Contact",
           contact_email: activity.contacts?.email,
-          contact_company: activity.contacts?.company
+          contact_company: activity.contacts?.companies?.name || null
         }))
 
         // Load contacts for dropdown
         const { data: contactsData, error: contactsError } = await supabase
           .from("contacts")
-          .select("id, name, email, company")
+          .select(`
+            id, 
+            name, 
+            email, 
+            company_id,
+            companies(name)
+          `)
           .eq("user_id", userId)
           .order("name", { ascending: true })
 
@@ -178,7 +184,7 @@ export default function Activities() {
           notes, 
           contact_id, 
           created_at,
-          contacts!inner(name, email, company)
+          contacts(name, email, company_id, companies(name))
         `)
         .eq("user_id", userId)
         .order("created_at", { ascending: false })
@@ -189,7 +195,7 @@ export default function Activities() {
         ...activity,
         contact_name: activity.contacts?.name || "Unknown Contact",
         contact_email: activity.contacts?.email,
-        contact_company: activity.contacts?.company
+        contact_company: activity.contacts?.companies?.name || null
       }))
 
       setActivities(transformedActivities || [])
@@ -565,7 +571,7 @@ export default function Activities() {
                 <option value="">Select Contact</option>
                 {contacts.map(contact => (
                   <option key={contact.id} value={contact.id}>
-                    {contact.name} {contact.company ? `(${contact.company})` : ''}
+                    {contact.name} {contact.companies?.name ? `(${contact.companies.name})` : ''}
                   </option>
                 ))}
               </select>
@@ -669,7 +675,7 @@ export default function Activities() {
                               <option value="">Select Contact</option>
                               {contacts.map(contact => (
                                 <option key={contact.id} value={contact.id}>
-                                  {contact.name} {contact.company ? `(${contact.company})` : ''}
+                                  {contact.name} {contact.companies?.name ? `(${contact.companies.name})` : ''}
                                 </option>
                               ))}
                             </select>
@@ -887,7 +893,7 @@ export default function Activities() {
                       <option value="">Select Contact</option>
                       {contacts.map(contact => (
                         <option key={contact.id} value={contact.id}>
-                          {contact.name} {contact.company ? `(${contact.company})` : ''}
+                          {contact.name} {contact.companies?.name ? `(${contact.companies.name})` : ''}
                         </option>
                       ))}
                     </select>

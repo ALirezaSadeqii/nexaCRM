@@ -1,9 +1,11 @@
 "use client"
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import supabase from '../config/supabaseClient'
 
 export default function Dashboard() {
+  const router = useRouter()
   const [metrics, setMetrics] = useState({
     contacts: 0,
     deals: 0,
@@ -22,12 +24,25 @@ export default function Dashboard() {
     try {
       setLoading(true)
       
-      // Fetch counts
+      // Identify current user to properly scope queries
+      const { data: userData, error: userError } = await supabase.auth.getUser()
+      if (userError) throw userError
+      const userId = userData?.user?.id
+
+      // If no user, show empty state
+      if (!userId) {
+        setMetrics({ contacts: 0, deals: 0, companies: 0, activities: 0 })
+        setRecentActivities([])
+        setRecentDeals([])
+        return
+      }
+
+      // Fetch counts, scoped to user
       const [contactsResult, dealsResult, companiesResult, activitiesResult] = await Promise.all([
-        supabase.from('contacts').select('*', { count: 'exact', head: true }),
-        supabase.from('deals').select('*', { count: 'exact', head: true }),
-        supabase.from('companies').select('*', { count: 'exact', head: true }),
-        supabase.from('activities').select('*', { count: 'exact', head: true })
+        supabase.from('contacts').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+        supabase.from('deals').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+        supabase.from('companies').select('*', { count: 'exact', head: true }).eq('user_id', userId),
+        supabase.from('activities').select('*', { count: 'exact', head: true }).eq('user_id', userId)
       ])
 
       // Fetch recent activities
@@ -38,6 +53,7 @@ export default function Dashboard() {
           contacts(name),
           companies(name)
         `)
+        .eq('user_id', userId)
         .order('created_at', { ascending: false })
         .limit(5)
 
@@ -49,6 +65,7 @@ export default function Dashboard() {
           contacts(name),
           companies(name)
         `)
+        .eq('user_id', userId)
         .order('created_at', { ascending: false })
         .limit(5)
 
@@ -189,25 +206,25 @@ export default function Dashboard() {
       <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Quick Actions</h2>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          <button className="flex items-center justify-center p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
+          <button onClick={() => router.push('/contacts')} className="flex items-center justify-center p-4 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors">
             <svg className="w-5 h-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
             <span className="text-blue-600 font-medium">Add Contact</span>
           </button>
-          <button className="flex items-center justify-center p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">
+          <button onClick={() => router.push('/deals')} className="flex items-center justify-center p-4 bg-green-50 hover:bg-green-100 rounded-lg transition-colors">
             <svg className="w-5 h-5 text-green-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
             <span className="text-green-600 font-medium">New Deal</span>
           </button>
-          <button className="flex items-center justify-center p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors">
+          <button onClick={() => router.push('/companies')} className="flex items-center justify-center p-4 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors">
             <svg className="w-5 h-5 text-purple-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>
             <span className="text-purple-600 font-medium">Add Company</span>
           </button>
-          <button className="flex items-center justify-center p-4 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors">
+          <button onClick={() => router.push('/activities')} className="flex items-center justify-center p-4 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors">
             <svg className="w-5 h-5 text-orange-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
             </svg>

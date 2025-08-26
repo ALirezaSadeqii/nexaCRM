@@ -562,7 +562,7 @@ export default function Contacts() {
                 value={quickAdd.name}
                 onChange={handleQuickAddChange}
                 placeholder="Name"
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500"
               />
               <input
                 type="email"
@@ -570,7 +570,7 @@ export default function Contacts() {
                 value={quickAdd.email}
                 onChange={handleQuickAddChange}
                 placeholder="Email"
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500"
               />
               <select
                 name="company_id"
@@ -584,7 +584,7 @@ export default function Contacts() {
                     setQuickAdd(prev => ({ ...prev, company_id: e.target.value }))
                   }
                 }}
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500"
               >
                 <option value="">Select Company</option>
                 <option value="new">+ Create New Company (use Add Contact)</option>
@@ -600,7 +600,7 @@ export default function Contacts() {
                 value={quickAdd.phone}
                 onChange={handleQuickAddChange}
                 placeholder="Phone"
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500"
               />
               <div className="flex md:justify-end">
                 <button
@@ -895,7 +895,7 @@ export default function Contacts() {
                       name="name"
                       value={formValues.name}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       placeholder="Enter full name"
                       required
                     />
@@ -910,7 +910,7 @@ export default function Contacts() {
                       name="email"
                       value={formValues.email}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       placeholder="Enter email address"
                       required
                     />
@@ -933,7 +933,7 @@ export default function Contacts() {
                             setFormValues(prev => ({ ...prev, company_id: e.target.value }))
                           }
                         }}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       >
                         <option value="">Select Company</option>
                         <option value="new">+ Create New Company</option>
@@ -953,7 +953,7 @@ export default function Contacts() {
                         name="phone"
                         value={formValues.phone}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="Enter phone number"
                       />
                     </div>

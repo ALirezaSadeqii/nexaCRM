@@ -474,7 +474,7 @@ export default function Companies() {
                 value={quickAdd.name}
                 onChange={handleQuickAddChange}
                 placeholder="Company Name"
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500"
               />
               <input
                 type="text"
@@ -482,7 +482,7 @@ export default function Companies() {
                 value={quickAdd.industry}
                 onChange={handleQuickAddChange}
                 placeholder="Industry"
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500"
               />
               <input
                 type="url"
@@ -490,7 +490,7 @@ export default function Companies() {
                 value={quickAdd.website}
                 onChange={handleQuickAddChange}
                 placeholder="Website"
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500"
               />
               <input
                 type="text"
@@ -498,7 +498,7 @@ export default function Companies() {
                 value={quickAdd.phone}
                 onChange={handleQuickAddChange}
                 placeholder="Phone"
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500"
               />
               <input
                 type="text"
@@ -506,7 +506,7 @@ export default function Companies() {
                 value={quickAdd.address}
                 onChange={handleQuickAddChange}
                 placeholder="Address"
-                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500"
               />
               <div className="flex md:justify-end">
                 <button
@@ -808,7 +808,7 @@ export default function Companies() {
                       name="name"
                       value={formValues.name}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       placeholder="Enter company name"
                       required
                     />
@@ -823,7 +823,7 @@ export default function Companies() {
                       name="industry"
                       value={formValues.industry}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       placeholder="Enter industry"
                     />
                   </div>
@@ -837,7 +837,7 @@ export default function Companies() {
                       name="website"
                       value={formValues.website}
                       onChange={handleInputChange}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500 transition-colors"
                       placeholder="https://example.com"
                     />
                   </div>
@@ -852,7 +852,7 @@ export default function Companies() {
                         name="phone"
                         value={formValues.phone}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="Enter phone number"
                       />
                     </div>
@@ -865,7 +865,7 @@ export default function Companies() {
                         name="address"
                         value={formValues.address}
                         onChange={handleInputChange}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 text-black focus:ring-blue-500 focus:border-blue-500 transition-colors"
                         placeholder="Enter address"
                       />
                     </div>

@@ -160,7 +160,7 @@ export default function Dashboard() {
 
       {/* Metrics Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <div className="card p-6 hover:shadow-md transition-shadow border border-slate-200/80 dark:border-white/10 bg-white/90 dark:bg-slate-900/80 backdrop-blur rounded-xl">
+        <div className="card p-6 hover:shadow-md transition-shadow border border-slate-200/80 dark:border-white/10 bg-white/90 dark:bg-slate-900 backdrop-blur rounded-xl">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-slate-600 dark:text-slate-300">Total Contacts</p>
@@ -174,7 +174,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="card p-6 hover:shadow-md transition-shadow border border-slate-200/80 dark:border-white/10 bg-white/90 dark:bg-slate-900/80 backdrop-blur rounded-xl">
+        <div className="card p-6 hover:shadow-md transition-shadow border border-slate-200/80 dark:border-white/10 bg-white/90 dark:bg-slate-900 backdrop-blur rounded-xl">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-slate-600 dark:text-slate-300">Active Deals</p>
@@ -188,7 +188,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="card p-6 hover:shadow-md transition-shadow border border-slate-200/80 dark:border-white/10 bg-white/90 dark:bg-slate-900/80 backdrop-blur rounded-xl">
+        <div className="card p-6 hover:shadow-md transition-shadow border border-slate-200/80 dark:border-white/10 bg-white/90 dark:bg-slate-900 backdrop-blur rounded-xl">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-slate-600 dark:text-slate-300">Companies</p>
@@ -202,7 +202,7 @@ export default function Dashboard() {
           </div>
         </div>
 
-        <div className="card p-6 hover:shadow-md transition-shadow border border-slate-200/80 dark:border-white/10 bg-white/90 dark:bg-slate-900/80 backdrop-blur rounded-xl">
+        <div className="card p-6 hover:shadow-md transition-shadow border border-slate-200/80 dark:border-white/10 bg-white/90 dark:bg-slate-900 backdrop-blur rounded-xl">
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm font-medium text-slate-600 dark:text-slate-300">Activities</p>
@@ -218,7 +218,7 @@ export default function Dashboard() {
       </div>
 
       {/* Quick Actions */}
-      <div className="card p-6 mb-8 border border-slate-200/80 dark:border-white/10 rounded-2xl">
+      <div className="card p-6 mb-8 border bg-slate-900 border-slate-200/80 dark:border-white/10 rounded-2xl">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Quick Actions</h2>
           <span className="text-xs text-slate-500 dark:text-slate-400">Navigate and create faster</span>
@@ -254,7 +254,7 @@ export default function Dashboard() {
       {/* Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
         {/* Recent Activities */}
-        <div className="card p-6 border border-slate-200/80 dark:border-white/10 rounded-2xl">
+        <div className="card p-6 border border-slate-200/80 bg-slate-900 dark:border-white/10 rounded-2xl">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Recent Activities</h2>
             <a href="/activities" className="inline-flex items-center gap-1 text-slate-900 hover:text-slate-700 dark:text-slate-200 dark:hover:text-white text-sm font-medium">
@@ -288,7 +288,7 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Deals */}
-        <div className="card p-6 border border-slate-200/80 dark:border-white/10 rounded-2xl">
+        <div className="card p-6 border border-slate-200/80 bg-slate-900 dark:border-white/10 rounded-2xl">
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-xl font-semibold text-slate-900 dark:text-slate-100">Recent Deals</h2>
             <a href="/deals" className="inline-flex items-center gap-1 text-slate-900 hover:text-slate-700 dark:text-slate-200 dark:hover:text-white text-sm font-medium">

@@ -19,6 +19,7 @@ export default function ClientLayout({ children }) {
   const [session, setSession] = useState(null)
   const [loading, setLoading] = useState(true)
   const [mounted, setMounted] = useState(false)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
   const pathname = usePathname()
   const router = useRouter()
 
@@ -113,7 +114,7 @@ export default function ClientLayout({ children }) {
   // If authenticated and not on login page, render with sidebar
   return (
     <div className="flex h-screen bg-gray-100">
-      <Sidebar session={session} />
+      <Sidebar session={session} collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed((v) => !v)} />
       <main className="flex-1 overflow-auto">
         {children}
       </main>

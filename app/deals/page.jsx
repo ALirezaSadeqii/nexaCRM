@@ -510,7 +510,7 @@ export default function Deals() {
                 {filteredDeals.length} of {deals.length} deals
               </p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               {/* Search */}
               <div className="relative">
                 <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
@@ -789,7 +789,7 @@ export default function Deals() {
                   Showing {(currentPage - 1) * pageSize + 1}–
                   {Math.min(currentPage * pageSize, sortedDeals.length)} of {sortedDeals.length}
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                   <select
                     value={pageSize}
                     onChange={(e) => {

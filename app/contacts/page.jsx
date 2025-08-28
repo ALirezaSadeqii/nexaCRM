@@ -476,46 +476,46 @@ export default function Contacts() {
   }
 
   return (
-    <div className="p-6">
+    <div className="p-6 bg-gradient-to-b from-slate-50 to-white min-h-screen">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Contacts</h1>
-        <p className="text-gray-600 mt-2">Manage your contacts and leads</p>
+        <h1 className="text-3xl font-bold tracking-tight text-slate-900">Contacts</h1>
+        <p className="text-slate-600 mt-2">Manage your contacts and leads</p>
       </div>
       
       {message.text ? (
         <div
           className={`${
             message.type === "success"
-              ? "bg-green-50 text-green-800 border-green-200"
+              ? "bg-emerald-50 text-emerald-800 ring-1 ring-emerald-200"
               : message.type === "error"
-              ? "bg-red-50 text-red-800 border-red-200"
-              : "bg-gray-50 text-gray-800 border-gray-200"
-          } border rounded-lg px-4 py-3 mb-6 flex items-center justify-between`}
+              ? "bg-rose-50 text-rose-800 ring-1 ring-rose-200"
+              : "bg-slate-50 text-slate-800 ring-1 ring-slate-200"
+          } rounded-xl px-4 py-3 mb-6 flex items-center justify-between shadow-sm`}
         >
           <span>{message.text}</span>
           <button
             onClick={() => setMessage({ type: "", text: "" })}
-            className="text-gray-400 hover:text-gray-600"
+            className="text-slate-400 hover:text-slate-600"
           >
             <XMarkIcon className="h-5 w-5" />
           </button>
         </div>
       ) : null}
 
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200">
+      <div className="bg-white rounded-2xl shadow-md ring-1 ring-black/5">
         {/* Header */}
-        <div className="px-6 py-4 border-b border-gray-200">
+        <div className="px-6 py-4 border-b border-gray-100 bg-white/60 backdrop-blur-sm rounded-t-2xl">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div>
-              <h2 className="text-xl font-semibold text-gray-900">All Contacts</h2>
-              <p className="text-sm text-gray-500 mt-1">
+              <h2 className="text-xl font-semibold text-slate-900">All Contacts</h2>
+              <p className="text-sm text-slate-500 mt-1">
                 {filteredContacts.length} of {contacts.length} contacts
               </p>
             </div>
-            <div className="flex items-center gap-3">
+            <div className="flex flex-wrap items-center gap-3">
               {/* Search */}
               <div className="relative">
-                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+                <MagnifyingGlassIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-slate-400" />
                 <input
                   type="text"
                   placeholder="Search contacts..."
@@ -526,7 +526,7 @@ export default function Contacts() {
               </div>
               <button
                 onClick={exportCSV}
-                className="inline-flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50"
+                className="inline-flex items-center gap-2 px-3 py-2 border border-slate-300 rounded-lg text-slate-700 hover:bg-slate-50 transition-colors"
                 title="Export CSV"
               >
                 <DocumentArrowDownIcon className="h-4 w-4" /> Export
@@ -534,7 +534,7 @@ export default function Contacts() {
               {selectedIds.size > 0 && (
                 <button
                   onClick={deleteSelected}
-                  className="inline-flex items-center gap-2 px-3 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700"
+                  className="inline-flex items-center gap-2 px-3 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 shadow-sm"
                 >
                   <TrashIcon className="h-4 w-4" /> Delete selected ({selectedIds.size})
                 </button>
@@ -542,7 +542,7 @@ export default function Contacts() {
               {/* Add Contact Button */}
               <button
                 onClick={openModal}
-                className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-sm"
               >
                 <PlusIcon className="h-4 w-4" />
               Add Contact
@@ -554,7 +554,7 @@ export default function Contacts() {
         {/* Content */}
         <div className="p-6">
           {/* Quick add bar */}
-          <div className="mb-4 bg-gray-50 p-4 rounded-lg border border-gray-200">
+          <div className="mb-4 bg-gradient-to-r from-slate-50 to-white p-4 rounded-xl border border-gray-200 ring-1 ring-black/5">
             <div className="grid grid-cols-1 md:grid-cols-5 gap-3">
               <input
                 type="text"
@@ -605,7 +605,7 @@ export default function Contacts() {
               <div className="flex md:justify-end">
                 <button
                   onClick={handleQuickAdd}
-                  className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+                  className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 shadow-sm"
                 >
                   <PlusIcon className="h-4 w-4" /> Quick Add
                 </button>
@@ -615,7 +615,7 @@ export default function Contacts() {
           {isLoading ? (
             <div className="flex items-center justify-center py-12">
               <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-              <span className="ml-3 text-gray-500">Loading contacts...</span>
+              <span className="ml-3 text-slate-500">Loading contacts...</span>
             </div>
           ) : hasContacts ? (
             <div className="overflow-x-auto">
@@ -638,11 +638,11 @@ export default function Contacts() {
                       { key: "phone", label: "Phone" },
                       { key: "created_at", label: "Created" },
                     ].map((col) => (
-                      <th key={col.key} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                      <th key={col.key} className="px-6 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wider">
                         <button
                           type="button"
                           onClick={() => toggleSort(col.key)}
-                          className="inline-flex items-center gap-1 hover:text-gray-700"
+                          className="inline-flex items-center gap-1 hover:text-slate-700"
                         >
                           {col.label}
                           {sort.key === col.key ? (
@@ -658,9 +658,9 @@ export default function Contacts() {
                     <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
                   </tr>
                 </thead>
-                <tbody className="bg-white divide-y divide-gray-200">
+                <tbody className="bg-white divide-y divide-gray-100">
                   {paginatedContacts.map((contact) => (
-                    <tr key={contact.id} className="hover:bg-gray-50 transition-colors">
+                    <tr key={contact.id} className="hover:bg-slate-50 transition-colors">
                       <td className="px-4 py-4">
                         <input
                           type="checkbox"
@@ -713,21 +713,21 @@ export default function Contacts() {
                               className="w-full px-2 py-1 border border-gray-300 rounded"
                             />
                           </td>
-                          <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                          <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
                             {contact.created_at ? new Date(contact.created_at).toLocaleDateString() : "—"}
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                             <div className="flex items-center justify-end gap-2">
                               <button
                                 onClick={() => handleInlineSave(contact.id)}
-                                className="text-green-600 hover:text-green-800 p-1 rounded"
+                                className="text-emerald-600 hover:text-emerald-800 p-1 rounded"
                                 title="Save"
                               >
                                 <CheckIcon className="h-5 w-5" />
                               </button>
                               <button
                                 onClick={handleInlineCancel}
-                                className="text-gray-600 hover:text-gray-800 p-1 rounded"
+                                className="text-slate-600 hover:text-slate-800 p-1 rounded"
                                 title="Cancel"
                               >
                                 <XMarkIcon className="h-5 w-5" />
@@ -738,10 +738,10 @@ export default function Contacts() {
                       ) : (
                         <>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm font-medium text-gray-900">{contact.name || "—"}</div>
+                            <div className="text-sm font-medium text-slate-900">{contact.name || "—"}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-700">
+                            <div className="text-sm text-slate-700">
                               {contact.email ? (
                                 <a href={`mailto:${contact.email}`} className="text-blue-600 hover:text-blue-800">
                                   {contact.email}
@@ -752,10 +752,10 @@ export default function Contacts() {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-700">{contact.company_name || "—"}</div>
+                            <div className="text-sm text-slate-700">{contact.company_name || "—"}</div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-700">
+                            <div className="text-sm text-slate-700">
                               {contact.phone ? (
                                 <a href={`tel:${contact.phone}`} className="text-blue-600 hover:text-blue-800">
                                   {contact.phone}
@@ -766,7 +766,7 @@ export default function Contacts() {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap">
-                            <div className="text-sm text-gray-500">
+                            <div className="text-sm text-slate-500">
                               {contact.created_at ? new Date(contact.created_at).toLocaleDateString() : "—"}
                             </div>
                           </td>
@@ -781,7 +781,7 @@ export default function Contacts() {
                               </button>
                               <button
                                 onClick={() => handleDelete(contact.id)}
-                                className="text-red-600 hover:text-red-800 p-1 rounded"
+                                className="text-rose-600 hover:text-rose-800 p-1 rounded"
                                 title="Delete contact"
                               >
                                 <TrashIcon className="h-4 w-4" />
@@ -800,7 +800,7 @@ export default function Contacts() {
                   Showing {(currentPage - 1) * pageSize + 1}–
                   {Math.min(currentPage * pageSize, sortedContacts.length)} of {sortedContacts.length}
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex flex-wrap items-center gap-3">
                   <select
                     value={pageSize}
                     onChange={(e) => {
@@ -835,7 +835,7 @@ export default function Contacts() {
             </div>
           ) : (
             <div className="text-center py-12">
-              <div className="mx-auto h-12 w-12 text-gray-400 mb-4">
+              <div className="mx-auto h-12 w-12 text-slate-400 mb-4">
                 <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
                     strokeLinecap="round"
@@ -845,13 +845,13 @@ export default function Contacts() {
                   />
                 </svg>
               </div>
-              <h3 className="text-lg font-medium text-gray-900 mb-2">No contacts found</h3>
-              <p className="text-gray-500 mb-6">
+              <h3 className="text-lg font-medium text-slate-900 mb-2">No contacts found</h3>
+              <p className="text-slate-500 mb-6">
                 Get started by adding your first contact to build your network.
               </p>
               <button
                 onClick={openModal}
-                className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium"
+                className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors font-medium shadow-sm"
               >
                 <PlusIcon className="h-4 w-4" />
                 Add Your First Contact
@@ -866,18 +866,18 @@ export default function Contacts() {
         <div className="fixed inset-0 z-50 overflow-y-auto">
           <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
             <div className="fixed inset-0 transition-opacity" aria-hidden="true">
-              <div className="absolute inset-0 bg-gray-500 opacity-75" onClick={closeModal}></div>
+              <div className="absolute inset-0 bg-gray-500/70 backdrop-blur-sm" onClick={closeModal}></div>
             </div>
 
-            <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
-              <div className="bg-white px-6 py-4 border-b border-gray-200">
+            <div className="inline-block align-bottom bg-white rounded-2xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+              <div className="bg-white px-6 py-4 border-b border-gray-100">
                 <div className="flex items-center justify-between">
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3 className="text-lg font-semibold text-slate-900">
                     {editingContact ? "Edit Contact" : "Add New Contact"}
                   </h3>
                   <button
                     onClick={closeModal}
-                    className="text-gray-400 hover:text-gray-600 transition-colors"
+                    className="text-slate-400 hover:text-slate-600 transition-colors"
                   >
                     <XMarkIcon className="h-6 w-6" />
                   </button>
@@ -1037,18 +1037,18 @@ export default function Contacts() {
                   )}
                 </div>
 
-                <div className="flex items-center justify-end gap-3 mt-8 pt-4 border-t border-gray-200">
+                <div className="flex items-center justify-end gap-3 mt-8 pt-4 border-t border-gray-100">
                   <button
                     type="button"
                     onClick={closeModal}
-                    className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+                    className="px-4 py-2 text-sm font-medium text-slate-700 bg-white border border-gray-300 rounded-lg hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
                   >
                     Cancel
                   </button>
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-blue-600 border border-transparent rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors shadow-sm"
                   >
                     {isSubmitting ? (
                       <>

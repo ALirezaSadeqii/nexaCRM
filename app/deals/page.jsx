@@ -519,7 +519,7 @@ export default function Deals() {
                   placeholder="Search deals..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-64"
+                  className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 w-full  text-black"
                 />
               </div>
               <button
@@ -540,7 +540,7 @@ export default function Deals() {
               {/* Add Deal Button */}
               <button
                 onClick={openModal}
-                className="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium"
+                className="inline-flex items-center gap-2 bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors font-medium"
               >
                 <PlusIcon className="h-4 w-4" />
               Add Deal
@@ -597,7 +597,7 @@ export default function Deals() {
               <div className="flex md:justify-end">
                 <button
                   onClick={handleQuickAdd}
-                  className="inline-flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
+                  className="inline-flex items-center gap-2 bg-black text-white px-4 py-2 rounded-lg hover:bg-green-700"
                 >
                   <PlusIcon className="h-4 w-4" /> Quick Add
                 </button>
@@ -955,7 +955,7 @@ export default function Deals() {
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-green-600 border border-transparent rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    className="inline-flex items-center gap-2 px-4 py-2 text-sm font-medium text-white bg-sky-600 border border-transparent rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
                   >
                     {isSubmitting ? (
                       <>

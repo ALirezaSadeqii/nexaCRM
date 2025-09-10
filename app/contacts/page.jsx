@@ -973,7 +973,7 @@ export default function Contacts() {
                             name="name"
                             value={newCompanyForm.name}
                             onChange={handleNewCompanyInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                             placeholder="Enter company name"
                             required
                           />
@@ -987,7 +987,7 @@ export default function Contacts() {
                             name="industry"
                             value={newCompanyForm.industry}
                             onChange={handleNewCompanyInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                             placeholder="Enter industry"
                           />
                         </div>
@@ -1001,7 +1001,7 @@ export default function Contacts() {
                               name="website"
                               value={newCompanyForm.website}
                               onChange={handleNewCompanyInputChange}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                               placeholder="https://example.com"
                             />
                           </div>
@@ -1014,7 +1014,7 @@ export default function Contacts() {
                               name="phone"
                               value={newCompanyForm.phone}
                               onChange={handleNewCompanyInputChange}
-                              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                              className="w-full px-3 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                               placeholder="Enter company phone"
                             />
                           </div>
@@ -1028,7 +1028,7 @@ export default function Contacts() {
                             name="address"
                             value={newCompanyForm.address}
                             onChange={handleNewCompanyInputChange}
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+                            className="w-full px-3 py-2 border border-gray-300 rounded-lg text-black focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
                             placeholder="Enter company address"
                           />
                         </div>

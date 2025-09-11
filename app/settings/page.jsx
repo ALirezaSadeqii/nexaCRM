@@ -151,7 +151,7 @@ export default function Settings() {
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
                   placeholder="Your name"
-                  className="w-full rounded-md border-gray-300 shadow-sm focus:border-gray-400 focus:ring-gray-400"
+                  className="w-full rounded-md border-gray-300 shadow-sm text-black focus:border-gray-400 focus:ring-gray-400"
                 />
               </div>
               <div>
@@ -161,7 +161,7 @@ export default function Settings() {
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                   placeholder="e.g. +1 555 123 4567"
-                  className="w-full rounded-md border-gray-300 shadow-sm focus:border-gray-400 focus:ring-gray-400"
+                  className="w-full rounded-md border-gray-300 shadow-sm text-black focus:border-gray-400 focus:ring-gray-400"
                 />
               </div>
               {subscription ? (
@@ -198,7 +198,7 @@ export default function Settings() {
                   value={newPassword}
                   onChange={(e) => setNewPassword(e.target.value)}
                   placeholder="At least 8 characters"
-                  className="w-full rounded-md border-gray-300 shadow-sm focus:border-gray-400 focus:ring-gray-400"
+                  className="w-full rounded-md border-gray-300 shadow-sm text-black focus:border-gray-400 focus:ring-gray-400"
                 />
                 <button
                   type="submit"

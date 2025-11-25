@@ -1,36 +1,64 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## NexaCRM
 
-## Getting Started
+Simple CRM-style dashboard built with the Next.js App Router and Supabase authentication.
 
-First, run the development server:
+## Local Setup
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Copy `env.example` to `.env.local` and add your Supabase Project URL and anon key:
+   ```bash
+   cp env.example .env.local
+   ```
+3. Start the dev server:
+   ```bash
+   npm run dev
+   ```
+4. Visit `http://localhost:3000`.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+> Environment variables are validated at runtime. The app will throw a helpful error if you forget to configure them.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+## Security & Secrets
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- `.gitignore` already excludes `.env*`, build artifacts, and OS cruft so secrets stay local.
+- Never commit your Supabase service role key—only the anon key belongs in `.env.local`.
+- Rotate your Supabase anon key if it was ever committed in earlier history.
+- Before pushing, run `git status --ignored` to ensure no hidden files are staged.
 
-## Learn More
+## GitHub Pages Deployment
 
-To learn more about Next.js, take a look at the following resources:
+The project is configured for static export (`next.config.js` sets `output: 'export'`).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Build the static bundle:
+   ```bash
+   npm run deploy
+   ```
+   The static files land in `out/`.
+2. (Optional) add `out/.nojekyll` so GitHub Pages serves files that start with `_`:
+   ```bash
+   touch out/.nojekyll
+   ```
+3. Push the contents of `out/` to a `gh-pages` branch:
+   ```bash
+   git subtree push --prefix out origin gh-pages
+   # or manually copy the folder into a dedicated branch
+   ```
+4. In the repo settings, point GitHub Pages at the `gh-pages` branch (root).
+5. If you host under `https://username.github.io/repo`, make sure to update links or set `homepage` in `package.json` so social previews display correctly.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Useful Scripts
 
-## Deploy on Vercel
+| Command        | Description                                |
+| -------------- | ------------------------------------------ |
+| `npm run dev`  | Start local dev server                     |
+| `npm run lint` | Lint the project                           |
+| `npm run build`| Produce the static export in `out/`        |
+| `npm run deploy`| Build + prepare assets for GitHub Pages  |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Additional Hardening Ideas
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- Review Supabase Row Level Security (RLS) policies before going live (`*.sql` files in the repo document them).
+- Use HTTPS-only cookies for any future server-side auth work.
+- Add end-to-end/browser tests before showcasing to recruiters.
